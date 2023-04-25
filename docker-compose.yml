@@ -8,7 +8,7 @@ services:
     # Caminho da Dockerfile
     build: .
     # Restarta a imagem caso algo a faça parar
-    restart: always
+    # restart: always
     # Lista de volumes (diretórios) mapeados de fora para dentro do container
     volumes:
       # Monta o diretório src, com todos o código do projeto, 
