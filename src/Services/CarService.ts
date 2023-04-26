@@ -28,13 +28,13 @@ class CarService {
     return allCar.map((e) => new Car(e));
   }
 
-  public async getUpdateCar(id: string, obj: ICar) {    
-    const carUpdate = await this.car.update(id, obj);
+  public async getUpdateCar(id: string, body: ICar) {    
+    const carUpdate = await this.car.update(id, body);
     
     if (carUpdate) {
       return this.createCarDomain(carUpdate);
     }
-    throw new Error('Car not found');
+    throw new InvalidError('Car not found', 404);
   }
 
   public async getListCarId(id: string) {    

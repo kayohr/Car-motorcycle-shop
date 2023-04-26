@@ -48,9 +48,9 @@ class CarController {
 
   public async getUpdate() {
     const { id } = this.req.params;    
-    const { obj } = this.req.body;
+    const { body } = this.req;
     try {
-      const carUpdate = await this.service.getUpdateCar(id, obj);
+      const carUpdate = await this.service.getUpdateCar(id, body);
       if (carUpdate) {
         return this.res.status(200).json(carUpdate);
       }
