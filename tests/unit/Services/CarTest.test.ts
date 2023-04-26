@@ -127,4 +127,7 @@ describe('Service Car', function () {
       }
     },
   );
+  afterEach(function () {
+    sinon.restore();
+  });
 });
