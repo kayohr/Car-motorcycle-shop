@@ -7,7 +7,7 @@ import sinon from 'sinon';
 import ICar from '../../../src/Interfaces/ICar';
 import CarService from '../../../src/Services/CarService';
 
-describe.only('Service Car', function () {
+describe('Service Car', function () {
   it('Cadastro valido', async function () {
     const entradaCadastroCarro: ICar = {
       id: ('6348513f34c397abcad040b2'),
@@ -36,35 +36,37 @@ describe.only('Service Car', function () {
     //     seatsQty: entradaCadastroCarro.seatsQty,
     //   });
   });
-  //   it('Lista dos carros', async function () {
-  //     const CarroLIst: ICar[] = [
-  //       {
-  //         _id: '634852326b35b59438fbea2f',
-  //         model: 'Marea',
-  //         year: 2002,
-  //         color: 'Black',
-  //         status: true,
-  //         buyValue: 15.99,
-  //         doorsQty: 4,
-  //         seatsQty: 5,
-  //       },
-  //       {
-  //         _id: '634852326b35b59438fbea31',
-  //         model: 'Tempra',
-  //         year: 1995,
-  //         color: 'Black',
-  //         buyValue: 39,
-  //         doorsQty: 2,
-  //         seatsQty: 5,
-  //       },
-  //     ];  
-  //     sinon.stub(Model, 'findAll').resolves(CarroLIst);
+  it('Lista dos carros', async function () {
+    const CarroLIst: ICar[] = [
+      {
+        id: '634852326b35b59438fbea2f',
+        model: 'Marea',
+        year: 2002,
+        color: 'Black',
+        status: true,
+        buyValue: 15.99,
+        doorsQty: 4,
+        seatsQty: 5,
+      },
+      {
+        id: '634852326b35b59438fbea31',
+        model: 'Tempra',
+        year: 1995,
+        color: 'Black',
+        status: false,
 
-  //     const service = new CarService();
-  //     const result = await service.getAllCarOfList();
+        buyValue: 39,
+        doorsQty: 2,
+        seatsQty: 5,
+      },
+    ];  
+    sinon.stub(Model, 'find').resolves(CarroLIst);
 
-  //     expect(result).to.be.deep.equal(CarroLIst);
-  //   });
+    const service = new CarService();
+    const result = await service.getAllCarOfList();
+
+    expect(result).to.deep.equal(CarroLIst);
+  });
   it('Listar um carro com succeso', async function () {
     const updateCarro: ICar = {
       id: '634852326b35b59438fbea2f',
@@ -76,54 +78,53 @@ describe.only('Service Car', function () {
       doorsQty: 4,
       seatsQty: 5,
     };  
-    sinon.stub(Model, 'update').resolves();
+    sinon.stub(Model, 'findByIdAndUpdate').resolves(updateCarro);
     const service = new CarService();
     const result = await service.getUpdateCar(updateCarro.id as string, updateCarro);
 
     expect(result).to.be.deep.equal(updateCarro);
   });
-  //   it('Validar que não é possível listar um carro que não existe', async function () {
-  //     const invalidId: ICar = {
-  //       model: 'Marea',
-  //       year: 2002,
-  //       color: 'Black',
-  //       status: true,
-  //       buyValue: 15.990,
-  //       doorsQty: 4,
-  //       seatsQty: 5,
-  //     }; 
-  //     sinon.stub(Model, 'create').resolves({});
-  //     const RESULT_ERROR = 'Car not found';
+  it('Validar que não é possível listar um carro que não existe', async function () {
+    const invalidId: ICar = {
+      model: 'Marea',
+      year: 2002,
+      color: 'Black',
+      status: true,
+      buyValue: 15.990,
+      doorsQty: 4,
+      seatsQty: 5,
+    }; 
+    const RESULT_ERROR = 'Car not found';
 
-  //     sinon.stub(Model, 'create').resolves({});
-  //     try {
-  //       const service = new CarService();
-  //       await service.register(invalidId);
-  //     } catch (error) {
-  //       expect((error as Error).message).to.be.equal(RESULT_ERROR);
-  //     }
-  //   });
-  //   it(
-  //     'Validar que não é possível listar um carro quando o formato do id esta inválido',
-  //     async function () {
-  //       const invalidId: ICar = {
-  //         model: 'Marea',
-  //         year: 2002,
-  //         color: 'Black',
-  //         status: true,
-  //         buyValue: 15.990,
-  //         doorsQty: 4,
-  //         seatsQty: 5,
-  //       };
-  //     const RESULT_ERROR = 'Invalid mongo id';
+    sinon.stub(Model, 'create').resolves({});
+    try {
+      const service = new CarService();
+      await service.register(invalidId);
+    } catch (error) {
+      expect((error as Error).message).to.be.equal(RESULT_ERROR);
+    }
+  });
+  it(
+    'Validar que não é possível listar um carro quando o formato do id esta inválido',
+    async function () {
+      const invalidId: ICar = {
+        model: 'Marea',
+        year: 2002,
+        color: 'Black',
+        status: true,
+        buyValue: 15.990,
+        doorsQty: 4,
+        seatsQty: 5,
+      };
+      const RESULT_ERROR = 'Invalid mongo id';
 
-//       sinon.stub(Model, 'create').resolves({});
-//       try {
-//         const service = new CarService();
-//         await service.register(invalidId);
-//       } catch (error) {
-//         expect((error as Error).message).to.be.equal(RESULT_ERROR);
-//       }
-//     },
-//   );
+      sinon.stub(Model, 'create').resolves({});
+      try {
+        const service = new CarService();
+        await service.register(invalidId);
+      } catch (error) {
+        expect((error as Error).message).to.be.equal(RESULT_ERROR);
+      }
+    },
+  );
 });
