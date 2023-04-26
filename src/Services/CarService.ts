@@ -1,8 +1,10 @@
 import Car from '../Domains/Car';
 import ICar from '../Interfaces/ICar';
+import InvalidError from '../Middlewares/ParamError';
 import CarODM from '../Models/CarODM';
 
 class CarService {
+  protected car = new CarODM();
   private createCarDomain(car: ICar | null): Car | null {
     if (car) {
       return new Car(
@@ -13,16 +15,36 @@ class CarService {
   }
 
   public async register(data: ICar) {
-    const car = new CarODM();
-    const newCar = await car.create(data);
+    // const car = new CarODM();
+    const newCar = await this.car.create(data);
+    // console.log(newCar);
+
     return this.createCarDomain(newCar);
   }
+  
+  public async getAllCarOfList() {
+    const allCar = await this.car.findAll();
+    
+    return allCar.map((e) => new Car(e));
+  }
 
-//   public async getByValue(value: string) {
-//     const keyODM = new KeyODM();
-//     const key = await keyODM.findByValue(value);
-//     return this.createCarDomain(key);
-//   }
+  public async getUpdateCar(id: string, obj: ICar) {    
+    const carUpdate = await this.car.update(id, obj);
+    
+    if (carUpdate) {
+      return this.createCarDomain(carUpdate);
+    }
+    throw new Error('Car not found');
+  }
+
+  public async getListCarId(id: string) {    
+    const carListId = await this.car.getById(id);
+    
+    if (carListId) {
+      return this.createCarDomain(carListId);
+    }
+    throw new InvalidError('Car not found', 404);
+  }
 }
 
 export default CarService;

@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import InvalidError from './ParamError';
 
 class ErrorHandler {
   public static handle(
@@ -7,7 +8,12 @@ class ErrorHandler {
     res: Response,
     next: NextFunction,
   ) {
-    res.status(500).json({ message: error.message });
+    // if (error.statusCode) {
+    //   return res.status(error.statusCode).json({ message: error.message });
+    // }
+    const { message, statusCode } = error as InvalidError;
+
+    res.status(statusCode || 500).json({ message });
     next();
   }
 }

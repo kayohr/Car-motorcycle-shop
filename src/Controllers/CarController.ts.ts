@@ -35,11 +35,41 @@ class CarController {
     }
   }
 
-//   public async getByValue() {
-//     const { value } = this.req.params;
-//     const key = await this.service.getByValue(value);
-//     return this.res.status(200).json(key);
-//   }
+  public async getAll() {
+    try {
+      const carAll = await this.service.getAllCarOfList();
+      if (carAll) {
+        return this.res.status(200).json(carAll);
+      }
+    } catch (error) {
+      this.next(error);
+    }
+  }
+
+  public async getUpdate() {
+    const { id } = this.req.params;    
+    const { obj } = this.req.body;
+    try {
+      const carUpdate = await this.service.getUpdateCar(id, obj);
+      if (carUpdate) {
+        return this.res.status(200).json(carUpdate);
+      }
+    } catch (error) {
+      this.next(error);
+    }
+  }
+
+  public async getCarId() {
+    const { id } = this.req.params;    
+    try {
+      const carId = await this.service.getListCarId(id);
+      if (carId) {
+        return this.res.status(200).json(carId);
+      }
+    } catch (error) {
+      this.next(error);
+    }
+  }
 }
 
 export default CarController;

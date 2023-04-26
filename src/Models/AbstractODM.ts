@@ -1,4 +1,5 @@
-import { Model, Schema, UpdateQuery, isValidObjectId, models, model } from 'mongoose';
+import { Model, Schema, UpdateQuery, isValidObjectId, model, models } from 'mongoose';
+import InvalidError from '../Middlewares/ParamError';
   
 abstract class AbstractODM<T> {
   protected model: Model<T>;
@@ -16,13 +17,18 @@ abstract class AbstractODM<T> {
   }
   
   public async update(_id: string, obj: Partial<T>): Promise<T | null> {
-    if (!isValidObjectId(_id)) throw Error('Invalid vehicle id');
+    if (!isValidObjectId(_id)) throw new InvalidError('Invalid mongo id', 422);
   
     return this.model.findByIdAndUpdate(
       { _id },
       { ...obj } as UpdateQuery<T>,
       { new: true },
     );
+  }
+
+  public async findAll(): Promise<T[]> {
+    const getList = await this.model.find();
+    return getList;
   }
 }
   

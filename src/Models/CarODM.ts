@@ -1,6 +1,7 @@
-import { Schema } from 'mongoose';
+import { Schema, isValidObjectId } from 'mongoose';
 import ICar from '../Interfaces/ICar';
 import AbstractODM from './AbstractODM';
+import InvalidError from '../Middlewares/ParamError';
 
 class CarODM extends AbstractODM<ICar> {
   constructor() {
@@ -19,6 +20,13 @@ class CarODM extends AbstractODM<ICar> {
 
   public async findByValue(value: string): Promise<ICar | null> {
     return this.model.findOne({ value });
+  }
+
+  public async getById(_id: string): Promise<ICar | null> {
+    if (!isValidObjectId(_id)) throw new InvalidError('Invalid mongo id', 422);
+    const test = await this.model.findOne({ _id });
+    
+    return test;
   }
 }
 
