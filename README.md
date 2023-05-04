@@ -1,1 +1,1 @@
-ESte projeto é uma aplicação que usa princípios de Programação Orientada a Objetos (POO) para a construção de uma API com CRUD para gerenciar uma concessionária de veículos(carro e moto. Isso será feito utilizando o banco de dados MongoDB através do framework do Mongoose.
+Este projeto é uma aplicação que usa princípios de Programação Orientada a Objetos (POO) para a construção de uma API com CRUD para gerenciar uma concessionária de veículos(carro e moto. Isso será feito utilizando o banco de dados MongoDB através do framework do Mongoose.
